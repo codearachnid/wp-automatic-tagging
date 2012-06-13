@@ -33,7 +33,12 @@ if ( !defined('ABSPATH') ) { die('-1'); }
 if( !class_exists('wp_auto_tagging') ) {
 	class wp_auto_tagging {
 		private function __construct() {
+			if ( is_admin() ) {
 
+				// enable this class to run only in the admin
+
+
+			}
 		}
 		public function retrieve_content( $args ) {
 			$defaults = array(
@@ -51,12 +56,24 @@ if( !class_exists('wp_auto_tagging') ) {
 			$wp_query = new WP_Query( $args );
 
 			foreach( $wp_query->posts as $post ) {
-				$title = $post->post_title;
-				$content = strip_shortcodes( $post->post_content );
+				$title = $this->clean_content( $post->post_title );
+				$content = $this->clean_content( $post->post_content );
 			}
+		}
+		private function clean_content( $content ){
+
+			// remove shortcodes or execute (todo)
+			$content = strip_shortcodes( $content );
+
+			// clean html away from content
+			$content = wp_filter_nohtml_kses( $content );
+
+			// all clean and ready to shine
+			return $content;
 		}
 		public function load_api() {
 			
 		}
 	}
+	$wp_auto_tagging = new wp_auto_tagging;
 }
