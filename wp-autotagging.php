@@ -77,3 +77,9 @@ if( !class_exists('wp_auto_tagging') ) {
 	}
 	$wp_auto_tagging = new wp_auto_tagging;
 }
+
+if( !class_exists('wp_auto_tagging_api') ) {
+	class wp_auto_tagging_api {
+		
+	}
+}
